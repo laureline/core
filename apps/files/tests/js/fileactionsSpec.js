@@ -34,8 +34,16 @@ describe('FileActions tests', function() {
 		$('#dir, #permissions, #filestable').remove();
 	});
 	it('calling display() sets file actions', function() {
-		// note: download_url is actually the link target, not the actual download URL...
-		var $tr = FileList.addFile('testName.txt', 1234, new Date(), false, false, {download_url: 'test/download/url'});
+		var fileData = {
+			id: 18,
+			type: 'file',
+			name: 'testName.txt',
+			mimetype: 'plain/text',
+			size: '1234',
+			etag: 'a01234c',
+			mtime: '123456'
+		};
+		var $tr = FileList.add(fileData);
 
 		// no actions before call
 		expect($tr.find('.action[data-action=Download]').length).toEqual(0);
@@ -62,14 +70,22 @@ describe('FileActions tests', function() {
 	});
 	it('redirects to download URL when clicking download', function() {
 		var redirectStub = sinon.stub(OC, 'redirect');
-		// note: download_url is actually the link target, not the actual download URL...
-		var $tr = FileList.addFile('test download File.txt', 1234, new Date(), false, false, {download_url: 'test/download/url'});
+		var fileData = {
+			id: 18,
+			type: 'file',
+			name: 'testName.txt',
+			mimetype: 'plain/text',
+			size: '1234',
+			etag: 'a01234c',
+			mtime: '123456'
+		};
+		var $tr = FileList.add(fileData);
 		FileActions.display($tr.find('td.filename'), true);
 
 		$tr.find('.action[data-action=Download]').click();
 
 		expect(redirectStub.calledOnce).toEqual(true);
-		expect(redirectStub.getCall(0).args[0]).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?files=test%20download%20File.txt&dir=%2Fsubdir&download');
+		expect(redirectStub.getCall(0).args[0]).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=testName.txt');
 		redirectStub.restore();
 	});
 });

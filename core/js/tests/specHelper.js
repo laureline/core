@@ -67,9 +67,15 @@ window.oc_config = {
 // global setup for all tests
 (function setupTests() {
 	var fakeServer = null,
+		$testArea = null,
 		routesRequestStub;
 
 	beforeEach(function() {
+		$testArea = $('<div id="testArea" style="display: none"></div>');
+		$('body').append($testArea);
+
+		OC.Router.routes = [];
+
 		// enforce fake XHR, tests should not depend on the server and
 		// must use fake responses for expected calls
 		fakeServer = sinon.fakeServer.create();
@@ -100,6 +106,8 @@ window.oc_config = {
 		// uncomment this to log requests
 		// console.log(window.fakeServer.requests);
 		fakeServer.restore();
+
+		$testArea.remove();
 	});
 })();
 
