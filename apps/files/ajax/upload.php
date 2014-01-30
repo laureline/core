@@ -20,6 +20,10 @@ if (empty($_POST['dirToken'])) {
 		die();
 	}
 } else {
+	// TODO: ideally this code should be in files_sharing/ajax/upload.php
+	// and the upload/file transfer code needs to be refactored into a utility method
+	// that could be used there
+
 	// return only read permissions for public upload
 	$allowedPermissions = OCP\PERMISSION_READ;
 
@@ -130,6 +134,7 @@ if (strpos($dir, '..') === false) {
 						$errorCode = 'targetnotfound';
 					} else {
 						$data = \OCA\Files\Helper::formatFileInfo($meta, $dir);
+						$data['permissions'] = $data['permissions'] & $allowedPermissions;
 						$data['status'] = 'success';
 						$result[] = $data;
 					}
@@ -148,6 +153,7 @@ if (strpos($dir, '..') === false) {
 				$error = $l->t('Upload failed. Could not get file info.');
 			} else {
 				$data = \OCA\Files\Helper::formatFileInfo($meta, $dir);
+				$data['permissions'] = $data['permissions'] & $allowedPermissions;
 				$data['status'] = 'existserror';
 				$result[] = $data;
 			}

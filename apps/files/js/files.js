@@ -618,14 +618,7 @@ function getPathForPreview(name) {
  * @return preview URL
  */
 Files.generatePreviewUrl = function(urlSpec) {
-	if ( $('#isPublic').length ) {
-		// TODO: move this to files_sharing and override this method
-		urlSpec.t = $('#dirToken').val();
-		previewURL = OC.Router.generate('core_ajax_public_preview', urlSpec);
-	} else {
-		previewURL = OC.Router.generate('core_ajax_preview', urlSpec);
-	}
-	return previewURL;
+	return OC.Router.generate('core_ajax_preview', urlSpec);
 }
 
 Files.lazyLoadPreview = function(path, mime, ready, width, height, etag) {
