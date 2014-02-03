@@ -36,6 +36,5 @@ if ($isIE8 && isset($_GET['dir'])){
 }
 
 $tmpl->assign('dir', $dir);
-$tmpl->assign('disableSharing', true);
 
 $tmpl->printPage();

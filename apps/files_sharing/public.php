@@ -154,7 +154,6 @@ if (isset($path)) {
 			$maxUploadFilesize=OCP\Util::maxUploadFilesize($path);
 			$folder = new OCP\Template('files', 'index', '');
 			$folder->assign('dir', $getPath);
-			$folder->assign('isCreatable', $allowPublicUploadEnabled);
 			$folder->assign('dirToken', $linkItem['token']);
 			$folder->assign('permissions', OCP\PERMISSION_READ);
 			$folder->assign('isPublic',true);
@@ -164,9 +163,7 @@ if (isset($path)) {
 			$folder->assign('uploadMaxHumanFilesize', OCP\Util::humanFileSize($maxUploadFilesize));
 			$folder->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
 			$folder->assign('usedSpacePercent', 0);
-			$folder->assign('disableSharing', true);
 			$folder->assign('trash', false);
-			$folder->assign('ajaxLoad', false);
 			$tmpl->assign('folder', $folder->fetchPage());
 			$maxInputFileSize = OCP\Config::getSystemValue('maxZipInputSize', OCP\Util::computerFileSize('800 MB'));
 			$allowZip = OCP\Config::getSystemValue('allowZipDownload', true);

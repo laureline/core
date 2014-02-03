@@ -94,14 +94,11 @@ if ($needUpgrade) {
 		$trashEmpty = \OCA\Files_Trashbin\Trashbin::isEmpty($user);
 	}
 
-	$isCreatable = \OC\Files\Filesystem::isCreatable($dir . '/');
-
 	OCP\Util::addscript('files', 'fileactions');
 	OCP\Util::addscript('files', 'files');
 	OCP\Util::addscript('files', 'keyboardshortcuts');
 	$tmpl = new OCP\Template('files', 'index', 'user');
 	$tmpl->assign('dir', $dir);
-	$tmpl->assign('isCreatable', $isCreatable);
 	$tmpl->assign('permissions', $permissions);
 	$tmpl->assign('files', $files);
 	$tmpl->assign('trash', $trashEnabled);
@@ -118,7 +115,6 @@ if ($needUpgrade) {
 	$tmpl->assign("mailNotificationEnabled", \OC_Appconfig::getValue('core', 'shareapi_allow_mail_notification', 'yes'));
 	$tmpl->assign("allowShareWithLink", \OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes'));
 	$tmpl->assign("encryptionInitStatus", $encryptionInitStatus);
-	$tmpl->assign('disableSharing', false);
 
 	$tmpl->printPage();
 }

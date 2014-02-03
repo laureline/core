@@ -42,15 +42,13 @@
 			</div>
 		</div>
 		<div id="file_action_panel"></div>
-		<div class="notCreatable notPublic <?php if ($_['isCreatable'] or $_['isPublic'] ):?>hidden<?php endif; ?>">
+		<div class="notCreatable notPublic hidden">
 			<?php p($l->t('You don’t have permission to upload or create files here'))?>
 		</div>
 	<input type="hidden" name="permissions" value="<?php p($_['permissions']); ?>" id="permissions">
 </div>
 
 <div id="emptycontent" class="hidden"><?php p($l->t('Nothing in here. Upload something!'))?></div>
-
-<input type="hidden" id="disableSharing" data-status="<?php p($_['disableSharing']); ?>" />
 
 <table id="filestable" data-allow-public-upload="<?php p($_['publicUploadEnabled'])?>" data-preview-x="36" data-preview-y="36">
 	<thead>
