@@ -354,4 +354,8 @@ class MappedLocal extends \OC\Files\Storage\Common{
 
 		return $path;
 	}
+
+	public function isLocal() {
+		return false;
+	}
 }

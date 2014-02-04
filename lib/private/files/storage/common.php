@@ -370,4 +370,14 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	public function free_space($path) {
 		return \OC\Files\SPACE_UNKNOWN;
 	}
+
+	/**
+	 * Returns false by default,
+	 * should be overridden by subclasses.
+	 */
+	public function isLocal() {
+		// the common implementation returns a temporary file by
+		// default, which is not local
+		return false;
+	}
 }

@@ -432,4 +432,11 @@ class Wrapper implements \OC\Files\Storage\Storage {
 	public function test() {
 		return $this->storage->test();
 	}
+
+	/**
+	 * Returns the wrapped storage's value for isLocal()
+	 */
+	public function isLocal() {
+		return $this->storage->isLocal();
+	}
 }
