@@ -128,15 +128,10 @@ class Shared_Cache extends Cache {
 			return $files;
 		} else {
 			if ($cache = $this->getSourceCache($folder)) {
+				$sharedir = $this->files[$folder];
 				$sourceFolderContent = $cache->getFolderContents($this->files[$folder]);
 				foreach ($sourceFolderContent as $key => $c) {
-					$ownerPathParts = explode('/', \OC_Filesystem::normalizePath($c['path']));
-					$userPathParts = explode('/', \OC_Filesystem::normalizePath($folder));
-					$usersPath = 'files/Shared/'.$userPathParts[1];
-					foreach (array_slice($ownerPathParts, 3) as $part) {
-						$usersPath .= '/'.$part;
-					}
-					$sourceFolderContent[$key]['usersPath'] = $usersPath;
+					$sourceFolderContent[$key]['usersPath'] = $sharedir . '/' . $c['name'];
 				}
 
 				return $sourceFolderContent;
