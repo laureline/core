@@ -123,7 +123,7 @@ class Shared_Cache extends Cache {
 			foreach ($files as &$file) {
 				$file['mimetype'] = $this->getMimetype($file['mimetype']);
 				$file['mimepart'] = $this->getMimetype($file['mimepart']);
-				$file['usersPath'] = ltrim($file['path'], '/');
+				$file['usersPath'] = 'files/Shared/' . ltrim($file['path'], '/');
 			}
 			return $files;
 		} else {
@@ -131,7 +131,7 @@ class Shared_Cache extends Cache {
 				$sharedir = $this->files[$folder];
 				$sourceFolderContent = $cache->getFolderContents($this->files[$folder]);
 				foreach ($sourceFolderContent as $key => $c) {
-					$sourceFolderContent[$key]['usersPath'] = $sharedir . '/' . $c['name'];
+					$sourceFolderContent[$key]['usersPath'] = 'files/Shared/' . $folder . '/' . $c['name'];
 				}
 
 				return $sourceFolderContent;

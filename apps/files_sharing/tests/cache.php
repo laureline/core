@@ -23,10 +23,17 @@ require_once __DIR__ . '/base.php';
 
 class Test_Files_Sharing_Cache extends Test_Files_Sharing_Base {
 
+	/**
+	 * @var OC_FilesystemView
+	 */
+	public $user2View;
+
 	function setUp() {
 		parent::setUp();
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
+
+		$this->user2View = new \OC\Files\View('/'. self::TEST_FILES_SHARING_API_USER2 . '/files');
 
 		// prepare user1's dir structure
 		$textData = "dummy file data\n";
@@ -86,7 +93,7 @@ class Test_Files_Sharing_Cache extends Test_Files_Sharing_Base {
 	}
 
 	function testGetFolderContentsInRoot() {
-		$results = $this->sharedStorage->getCache()->getFolderContents('');
+		$results = $this->user2View->getDirectoryContent('/Shared/');
 
 		$this->verifyFiles(
 			array(
@@ -94,13 +101,13 @@ class Test_Files_Sharing_Cache extends Test_Files_Sharing_Base {
 					'name' => 'shareddir',
 					'path' => '/shareddir',
 					'mimetype' => 'httpd/unix-directory',
-					'usersPath' => 'shareddir'
+					'usersPath' => 'files/Shared/shareddir'
 				),
 				array(
 					'name' => 'shared single file.txt',
 					'path' => '/shared single file.txt',
 					'mimetype' => 'text/plain',
-					'usersPath' => 'shared single file.txt'
+					'usersPath' => 'files/Shared/shared single file.txt'
 				),
 			),
 			$results
@@ -108,26 +115,28 @@ class Test_Files_Sharing_Cache extends Test_Files_Sharing_Base {
 	}
 
 	function testGetFolderContentsInSubdir() {
-		$results = $this->sharedStorage->getCache()->getFolderContents('shareddir');
+		//$results = $this->sharedStorage->getCache()->getFolderContents('shareddir');
+		$results = $this->user2View->getDirectoryContent('/Shared/shareddir');
+
 		$this->verifyFiles(
 			array(
 				array(
 					'name' => 'bar.txt',
-					'path' => '/shareddir/bar.txt',
+					'path' => 'files/container/shareddir/bar.txt',
 					'mimetype' => 'text/plain',
-					'usersPath' => 'shareddir/bar.txt'
+					'usersPath' => 'files/Shared/shareddir/bar.txt'
+				),
+				array(
+					'name' => 'emptydir',
+					'path' => 'files/container/shareddir/emptydir',
+					'mimetype' => 'httpd/unix-directory',
+					'usersPath' => 'files/Shared/shareddir/emptydir'
 				),
 				array(
 					'name' => 'subdir',
-					'path' => '/shareddir/emptydir',
+					'path' => 'files/container/shareddir/subdir',
 					'mimetype' => 'httpd/unix-directory',
-					'usersPath' => 'shareddir/emptydir'
-				),
-				array(
-					'name' => 'subdir',
-					'path' => '/shareddir/subdir',
-					'mimetype' => 'httpd/unix-directory',
-					'usersPath' => 'shareddir/subdir'
+					'usersPath' => 'files/Shared/shareddir/subdir'
 				),
 			),
 			$results
@@ -143,9 +152,9 @@ class Test_Files_Sharing_Cache extends Test_Files_Sharing_Base {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER3);
 
-		$thirdView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER3);
-		list($this->sharedStorage, $internalPath) = $thirdView->resolvePath('files/Shared');
-		$results = $this->sharedStorage->getCache()->getFolderContents('subdir');
+		$thirdView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER3 . '/files');
+		//list($this->sharedStorage, $internalPath) = $thirdView->resolvePath('files/Shared');
+		$results = $thirdView->getDirectoryContent('/Shared/subdir');
 
 		$this->verifyFiles(
 			array(
@@ -154,21 +163,21 @@ class Test_Files_Sharing_Cache extends Test_Files_Sharing_Base {
 					'path' => 'files/container/shareddir/subdir/another too.txt',
 					//'path' => '/subdir/another too.txt',
 					'mimetype' => 'text/plain',
-					'usersPath' => 'subdir/another too.txt'
+					'usersPath' => 'files/Shared/subdir/another too.txt'
 				),
 				array(
 					'name' => 'another.txt',
 					'path' => 'files/container/shareddir/subdir/another.txt',
 					//'path' => '/subdir/another.txt',
 					'mimetype' => 'text/plain',
-					'usersPath' => 'subdir/another.txt'
+					'usersPath' => 'files/Shared/subdir/another.txt'
 				),
 				array(
 					'name' => 'not a text file.xml',
 					'path' => 'files/container/shareddir/subdir/not a text file.xml',
 					//'path' => '/subdir/not a text file.xml',
 					'mimetype' => 'application/xml',
-					'usersPath' => 'subdir/not a text file.xml'
+					'usersPath' => 'files/Shared/subdir/not a text file.xml'
 				),
 			),
 			$results
