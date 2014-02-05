@@ -1197,7 +1197,8 @@ $(document).ready(function() {
 	FileList.changeDirectory(dir, false, true);
 
 	// set dir initially
-	FileList.breadcrumb.setDirectory(dir);
+	// FIXME: breaks trashbin breadcrumb
+	//	FileList.breadcrumb.setDirectory(dir);
 
 	FileList.createFileSummary();
 });
